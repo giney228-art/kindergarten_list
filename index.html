@@ -1,0 +1,842 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>2023년생 유치원 체크리스트</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;700;900&display=swap" rel="stylesheet">
+    <style>
+        body { font-family: 'Noto Sans KR', sans-serif; background-color: #f3f4f6; }
+        /* 코믹/일러스트 스타일 굵은 테두리와 디자인 */
+        .comic-border { border-color: #2d3748; }
+        
+        .comic-btn { 
+            background-color: #FFB347; color: white; border: 3px solid #2d3748; 
+            box-shadow: 3px 4px 0 #2d3748; font-weight: 900; border-radius: 12px; transition: all 0.1s; 
+        }
+        .comic-btn:active { transform: translate(3px, 4px); box-shadow: none; }
+        
+        .comic-btn-white { 
+            background-color: white; color: #2d3748; border: 3px solid #2d3748; 
+            box-shadow: 3px 4px 0 #2d3748; font-weight: 900; border-radius: 12px; transition: all 0.1s; 
+        }
+        .comic-btn-white:active { transform: translate(3px, 4px); box-shadow: none; }
+        
+        .comic-card { border: 3px solid #2d3748; border-radius: 16px; box-shadow: 4px 5px 0 #2d3748; background-color: white; }
+        
+        .page { display: none; height: 100%; flex-direction: column; overflow-y: auto; padding-bottom: 20px;}
+        .page.active { display: flex; }
+        
+        /* 스크롤바 숨기기 */
+        ::-webkit-scrollbar { width: 0px; background: transparent; }
+        
+        /* 선택된 탭 스타일 보조 */
+        .tab-selected { background-color: #FFB347 !important; color: white !important; border-color: #FFB347 !important; }
+    </style>
+</head>
+<body class="flex justify-center h-screen overflow-hidden">
+
+<div id="app-container" class="w-full max-w-md bg-[#FFF9ED] h-full relative flex flex-col border-x-4 comic-border shadow-2xl">
+    
+    <!-- 공통 헤더 (페이지 2~7) -->
+    <div id="app-header" class="hidden flex justify-between items-center p-4 border-b-4 comic-border bg-white z-10 shrink-0">
+        <h1 class="font-black text-lg text-[#2d3748]">2023년생 유치원 체크</h1>
+        <div class="flex items-center gap-2">
+            <div class="w-6 h-6 rounded-full bg-blue-100 flex justify-center items-center font-bold text-blue-600 text-xs comic-border border-2">G</div>
+            <span id="user-name" class="text-xs font-bold text-gray-600">로그인 전</span>
+        </div>
+    </div>
+
+    <!-- 진행률 표시기 -->
+    <div id="progress-bar" class="hidden flex justify-center gap-2 py-3 bg-[#FFF9ED] shrink-0 border-b-4 comic-border">
+        <div id="dot-3" class="w-3 h-3 rounded-full comic-border border-2 bg-white"></div>
+        <div id="dot-4" class="w-3 h-3 rounded-full comic-border border-2 bg-white"></div>
+        <div id="dot-5" class="w-3 h-3 rounded-full comic-border border-2 bg-white"></div>
+        <div id="dot-6" class="w-3 h-3 rounded-full comic-border border-2 bg-white"></div>
+        <div id="dot-7" class="w-3 h-3 rounded-full comic-border border-2 bg-white"></div>
+    </div>
+
+    <!-- Page 1: Home (Start) -->
+    <div id="page-1" class="page active px-6 pt-10">
+        <div class="text-center mb-8">
+            <h2 class="text-3xl font-black leading-snug text-[#2d3748] tracking-tight">
+                2023년생을 위한<br>
+                <span class="text-[#FF8A00] text-4xl">유치원</span> 알아보는 방법
+            </h2>
+        </div>
+        
+        <!-- 대형 귀여운 이모지 일러스트 영역 -->
+        <div class="flex-1 flex flex-col justify-center items-center py-6">
+            <div class="bg-white rounded-full w-48 h-48 comic-border border-4 flex justify-center items-center shadow-[6px_6px_0_#2d3748] relative">
+                <div class="text-[80px] absolute -top-4 -left-4 animate-bounce">👨‍👩‍👧‍👦</div>
+                <div class="text-[70px] mt-4">🗺️</div>
+                <div class="text-[50px] absolute -bottom-2 -right-2">🎒</div>
+            </div>
+            <p class="font-bold text-[#2d3748] mt-8 text-center bg-white px-4 py-2 rounded-xl comic-border border-2">
+                "설명회 가기 전 필수 앱!"
+            </p>
+        </div>
+
+        <div class="mt-auto mb-8 shrink-0">
+            <button onclick="loginAndStart()" class="w-full comic-btn-white py-4 text-lg flex items-center justify-center gap-3 mb-3">
+                <img src="https://upload.wikimedia.org/wikipedia/commons/5/53/Google_%22G%22_Logo.svg" class="w-5 h-5" alt="Google">
+                구글 로그인 후 시작하기
+            </button>
+            <button onclick="loginAndViewArchive()" class="w-full bg-[#E2E8F0] text-[#2d3748] border-3 border-[#2d3748] font-black py-4 rounded-xl flex items-center justify-center gap-2 shadow-[3px_4px_0_#2d3748] active:translate-y-1 active:translate-x-1 active:shadow-none transition">
+                <i class="fa-solid fa-folder-open text-xl text-gray-600"></i> 내 유치원 보관함 보기
+            </button>
+        </div>
+    </div>
+
+    <!-- Page 2: Table of Contents & Info -->
+    <div id="page-2" class="page px-6 pt-6">
+        <div class="comic-card p-5 mb-6 bg-white">
+            <label class="block text-sm font-black text-gray-500 mb-2">알아보고 계신 유치원 이름</label>
+            <input type="text" id="kg-name" placeholder="예: 튼튼유치원" class="w-full border-b-4 border-[#2d3748] text-2xl font-black text-[#2d3748] py-2 outline-none focus:border-[#FFB347] transition placeholder-gray-300">
+            <p id="kg-error" class="text-red-500 text-xs font-bold mt-2 hidden">유치원 이름을 꼭 입력해주세요!</p>
+        </div>
+
+        <h2 class="text-xl font-black mb-4 text-[#2d3748] text-center">유치원 체크리스트 목차</h2>
+        
+        <div class="flex flex-col gap-3">
+            <button onclick="goToPage(3)" class="w-full comic-btn-white py-4 px-5 text-left text-lg flex justify-between items-center bg-white">
+                <span>① 아동·교사 비율 확인</span> <span class="text-2xl">👩‍👧‍👦</span>
+            </button>
+            <button onclick="goToPage(4)" class="w-full comic-btn-white py-4 px-5 text-left text-lg flex justify-between items-center bg-white">
+                <span>② 놀이시간 확인</span> <span class="text-2xl">🛝</span>
+            </button>
+            <button onclick="goToPage(5)" class="w-full comic-btn-white py-4 px-5 text-left text-lg flex justify-between items-center bg-white">
+                <span>③ 프로그램 확인</span> <span class="text-2xl">🎨</span>
+            </button>
+            <button onclick="goToPage(6)" class="w-full comic-btn-white py-4 px-5 text-left text-lg flex justify-between items-center bg-white">
+                <span>④ 선생님 근속연수</span> <span class="text-2xl">📋</span>
+            </button>
+            <button onclick="goToPage(7)" class="w-full comic-btn-white py-4 px-5 text-left text-lg flex justify-between items-center bg-white">
+                <span>⑤ 방학 운영 방식</span> <span class="text-2xl">🗓️</span>
+            </button>
+        </div>
+
+        <div class="mt-auto pt-6 pb-4 shrink-0">
+            <button onclick="nextPage()" class="w-full comic-btn py-4 text-lg">다음으로</button>
+        </div>
+    </div>
+
+    <!-- Page 3: Ratio -->
+    <div id="page-3" class="page px-6 pt-6 relative">
+        <h2 class="text-2xl font-black mb-6 text-[#2d3748]">① 아동·교사 비율 확인</h2>
+        
+        <div class="comic-card p-5 mb-5 bg-white">
+            <label class="block font-black text-lg mb-3 text-[#2d3748]">한 반의 아이 수</label>
+            <div class="flex gap-2 mb-3">
+                <button type="button" data-group="child_count" data-value="15_under" onclick="selectBtn('child_count', '15_under')" class="flex-1 bg-white text-[#2d3748] border-3 border-[#2d3748] font-bold py-3 rounded-xl transition">15명 이하</button>
+                <button type="button" data-group="child_count" data-value="15_over" onclick="selectBtn('child_count', '15_over')" class="flex-1 bg-white text-[#2d3748] border-3 border-[#2d3748] font-bold py-3 rounded-xl transition">15명 이상</button>
+                <input type="radio" name="child_count" value="15_under" class="hidden">
+                <input type="radio" name="child_count" value="15_over" class="hidden">
+            </div>
+            <div class="flex items-center gap-3">
+                <span class="font-bold text-gray-500">정확한 인원:</span>
+                <input type="number" id="child_count_exact" placeholder="예: 16" class="w-20 border-b-2 border-gray-400 text-center text-lg font-bold outline-none" oninput="calculateRatio()">
+                <span class="font-bold">명</span>
+            </div>
+        </div>
+
+        <div class="comic-card p-5 bg-white mb-5">
+            <label class="block font-black text-lg mb-4 text-[#2d3748]">반의 교사 수</label>
+            <div class="grid grid-cols-3 gap-2 text-center mb-4">
+                <div>
+                    <div class="font-bold mb-2 bg-[#FFF9ED] rounded-lg py-1 border-2 border-gray-200">담임교사</div>
+                    <div class="flex justify-between items-center bg-gray-100 rounded-lg p-1 border-2 border-gray-200">
+                        <button onclick="updateCounter('teacher', -1)" class="w-6 h-6 bg-white rounded font-black">-</button>
+                        <span id="count_teacher" class="font-black text-lg">1</span>
+                        <button onclick="updateCounter('teacher', 1)" class="w-6 h-6 bg-white rounded font-black">+</button>
+                    </div>
+                </div>
+                <div>
+                    <div class="font-bold mb-2 bg-[#FFF9ED] rounded-lg py-1 border-2 border-gray-200">부담임</div>
+                    <div class="flex justify-between items-center bg-gray-100 rounded-lg p-1 border-2 border-gray-200">
+                        <button onclick="updateCounter('coteacher', -1)" class="w-6 h-6 bg-white rounded font-black">-</button>
+                        <span id="count_coteacher" class="font-black text-lg">0</span>
+                        <button onclick="updateCounter('coteacher', 1)" class="w-6 h-6 bg-white rounded font-black">+</button>
+                    </div>
+                </div>
+                <div>
+                    <div class="font-bold mb-2 bg-[#FFF9ED] rounded-lg py-1 border-2 border-gray-200">보조교사</div>
+                    <div class="flex justify-between items-center bg-gray-100 rounded-lg p-1 border-2 border-gray-200">
+                        <button onclick="updateCounter('assistant', -1)" class="w-6 h-6 bg-white rounded font-black">-</button>
+                        <span id="count_assistant" class="font-black text-lg">0</span>
+                        <button onclick="updateCounter('assistant', 1)" class="w-6 h-6 bg-white rounded font-black">+</button>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="border-t-2 border-dashed border-gray-300 pt-3 text-center">
+                <p id="ratio_result" class="text-xl font-black text-gray-400 mt-1">인원을 입력해주세요</p>
+                <p id="ratio_guide" class="text-xs font-bold text-gray-500 mt-1"></p>
+            </div>
+        </div>
+
+        <div class="comic-card p-5 mb-5 bg-white">
+             <label class="block font-black text-lg mb-3 text-[#2d3748]">선생님 상주 여부</label>
+             <div class="flex gap-2">
+                <button type="button" data-group="resident" data-value="종일" onclick="selectBtn('resident', '종일')" class="flex-1 bg-white text-[#2d3748] border-3 border-[#2d3748] font-bold py-3 rounded-xl transition">하루종일 상주</button>
+                <button type="button" data-group="resident" data-value="파트타임" onclick="selectBtn('resident', '파트타임')" class="flex-1 bg-white text-[#2d3748] border-3 border-[#2d3748] font-bold py-3 rounded-xl transition text-sm">시간제 파트타임</button>
+                <input type="radio" name="resident" value="종일" class="hidden">
+                <input type="radio" name="resident" value="파트타임" class="hidden">
+            </div>
+        </div>
+
+        <!-- 하단 네비게이션 공통 -->
+        <div class="mt-auto pt-4 pb-4 flex gap-2 shrink-0 bg-[#FFF9ED]">
+            <button onclick="goToPage(2)" class="w-1/4 comic-btn-white py-3 text-sm flex items-center justify-center font-bold">목차로</button>
+            <button onclick="prevPage()" class="w-1/4 comic-btn-white py-3 text-sm font-bold">이전</button>
+            <button onclick="nextPage()" class="w-2/4 comic-btn py-3 text-lg font-black">다음</button>
+        </div>
+    </div>
+
+    <!-- Page 4: Playtime -->
+    <div id="page-4" class="page px-6 pt-6">
+        <h2 class="text-2xl font-black mb-2 text-[#2d3748]">② 놀이시간 확인</h2>
+        <p class="text-gray-600 font-bold mb-6">실내·실외 바깥 놀이로 충분한 신체활동을 하나요?</p>
+        
+        <div class="bg-orange-100 rounded-2xl comic-border border-4 p-6 flex justify-center items-center gap-4 shadow-[4px_4px_0_#2d3748] mb-8 bg-white">
+            <div class="text-[50px]">🛝</div>
+            <div class="text-[40px] mt-4">⚽</div>
+            <div class="text-[50px]">🏃‍♂️</div>
+        </div>
+
+        <div class="mb-6">
+            <label class="block font-black text-lg mb-3 text-[#2d3748]"><i class="fa-solid fa-house text-[#FFB347]"></i> 실내 놀이시간</label>
+            <div class="flex flex-col gap-2">
+                <button type="button" data-group="indoor_play" data-value="충분함" onclick="selectBtn('indoor_play', '충분함')" class="w-full bg-white text-[#2d3748] border-3 border-[#2d3748] font-bold py-3 px-4 rounded-xl text-left transition">네, 1시간 이상 충분함</button>
+                <button type="button" data-group="indoor_play" data-value="보통" onclick="selectBtn('indoor_play', '보통')" class="w-full bg-white text-[#2d3748] border-3 border-[#2d3748] font-bold py-3 px-4 rounded-xl text-left transition">보통임 (일부 시간만)</button>
+                <button type="button" data-group="indoor_play" data-value="부족함" onclick="selectBtn('indoor_play', '부족함')" class="w-full bg-white text-[#2d3748] border-3 border-[#2d3748] font-bold py-3 px-4 rounded-xl text-left transition">부족함</button>
+                <input type="radio" name="indoor_play" value="충분함" class="hidden">
+                <input type="radio" name="indoor_play" value="보통" class="hidden">
+                <input type="radio" name="indoor_play" value="부족함" class="hidden">
+            </div>
+        </div>
+
+        <div class="mb-4">
+            <label class="block font-black text-lg mb-3 text-[#2d3748]"><i class="fa-solid fa-sun text-[#FFB347]"></i> 실외(바깥) 놀이시간</label>
+            <div class="flex flex-col gap-2">
+                <button type="button" data-group="outdoor_play" data-value="충분함" onclick="selectBtn('outdoor_play', '충분함')" class="w-full bg-white text-[#2d3748] border-3 border-[#2d3748] font-bold py-3 px-4 rounded-xl text-left transition">매일 1시간 이상 나감</button>
+                <button type="button" data-group="outdoor_play" data-value="보통" onclick="selectBtn('outdoor_play', '보통')" class="w-full bg-white text-[#2d3748] border-3 border-[#2d3748] font-bold py-3 px-4 rounded-xl text-left transition">주 2~3회 정도 나감</button>
+                <button type="button" data-group="outdoor_play" data-value="부족함" onclick="selectBtn('outdoor_play', '부족함')" class="w-full bg-white text-[#2d3748] border-3 border-[#2d3748] font-bold py-3 px-4 rounded-xl text-left transition">거의 안 나감 / 실내 위주</button>
+                <input type="radio" name="outdoor_play" value="충분함" class="hidden">
+                <input type="radio" name="outdoor_play" value="보통" class="hidden">
+                <input type="radio" name="outdoor_play" value="부족함" class="hidden">
+            </div>
+        </div>
+
+        <div class="mt-auto pt-4 pb-4 flex gap-2 shrink-0 bg-[#FFF9ED]">
+            <button onclick="goToPage(2)" class="w-1/4 comic-btn-white py-3 text-sm flex items-center justify-center font-bold">목차로</button>
+            <button onclick="prevPage()" class="w-1/4 comic-btn-white py-3 text-sm font-bold">이전</button>
+            <button onclick="nextPage()" class="w-2/4 comic-btn py-3 text-lg font-black">다음</button>
+        </div>
+    </div>
+
+    <!-- Page 5: Program -->
+    <div id="page-5" class="page px-6 pt-6">
+        <h2 class="text-2xl font-black mb-6 text-[#2d3748]">③ 프로그램 확인</h2>
+        
+        <div class="bg-blue-50 rounded-2xl comic-border border-4 p-6 flex justify-center items-center gap-4 shadow-[4px_4px_0_#2d3748] mb-6 bg-white">
+            <div class="text-[50px] animate-pulse">🎨</div>
+            <div class="text-[60px] -mt-4">🏀</div>
+            <div class="text-[50px]">🎶</div>
+        </div>
+
+        <div class="grid grid-cols-2 gap-3 mb-6">
+            <div onclick="selectToggle(this)" class="bg-white text-[#2d3748] border-3 border-[#2d3748] font-bold py-3 px-3 rounded-xl flex items-center gap-2 transition cursor-pointer">
+                <input type="checkbox" name="program" value="언어" class="hidden">
+                <div class="w-5 h-5 rounded border-2 border-[#2d3748] flex justify-center items-center pointer-events-none check-icon text-transparent">✔</div>
+                <span class="pointer-events-none">🗣️ 언어 (영어)</span>
+            </div>
+            <div onclick="selectToggle(this)" class="bg-white text-[#2d3748] border-3 border-[#2d3748] font-bold py-3 px-3 rounded-xl flex items-center gap-2 transition cursor-pointer">
+                <input type="checkbox" name="program" value="체육" class="hidden">
+                <div class="w-5 h-5 rounded border-2 border-[#2d3748] flex justify-center items-center pointer-events-none check-icon text-transparent">✔</div>
+                <span class="pointer-events-none">⚽ 체육활동</span>
+            </div>
+            <div onclick="selectToggle(this)" class="bg-white text-[#2d3748] border-3 border-[#2d3748] font-bold py-3 px-3 rounded-xl flex items-center gap-2 transition cursor-pointer">
+                <input type="checkbox" name="program" value="무용" class="hidden">
+                <div class="w-5 h-5 rounded border-2 border-[#2d3748] flex justify-center items-center pointer-events-none check-icon text-transparent">✔</div>
+                <span class="pointer-events-none">🩰 무용/발레</span>
+            </div>
+            <div onclick="selectToggle(this)" class="bg-white text-[#2d3748] border-3 border-[#2d3748] font-bold py-3 px-3 rounded-xl flex items-center gap-2 transition cursor-pointer">
+                <input type="checkbox" name="program" value="미술" class="hidden">
+                <div class="w-5 h-5 rounded border-2 border-[#2d3748] flex justify-center items-center pointer-events-none check-icon text-transparent">✔</div>
+                <span class="pointer-events-none">🎨 미술/창의</span>
+            </div>
+            <div onclick="selectToggle(this)" class="col-span-2 bg-white text-[#2d3748] border-3 border-[#2d3748] font-bold py-3 px-3 rounded-xl flex items-center gap-2 transition cursor-pointer">
+                <input type="checkbox" name="program" value="그외" class="hidden">
+                <div class="w-5 h-5 rounded border-2 border-[#2d3748] flex justify-center items-center pointer-events-none check-icon text-transparent">✔</div>
+                <span class="pointer-events-none">➕ 그 외 (코딩, 음악, 숲체험 등)</span>
+            </div>
+        </div>
+
+        <div class="mb-4 flex-1">
+            <label class="block font-black text-lg mb-2 text-[#2d3748]"><i class="fa-solid fa-pen text-[#FFB347]"></i> 프로그램 메모장</label>
+            <textarea id="memo" rows="3" placeholder="특성화 프로그램 비용, 추가로 운영하는 프로그램 등 알게된 사실을 자유롭게 적어두세요!" class="w-full comic-border border-3 rounded-xl p-3 text-sm font-bold resize-none focus:outline-none focus:border-[#FFB347]"></textarea>
+        </div>
+
+        <div class="mt-auto pt-2 pb-4 flex gap-2 shrink-0 bg-[#FFF9ED]">
+            <button onclick="goToPage(2)" class="w-1/4 comic-btn-white py-3 text-sm flex items-center justify-center font-bold">목차로</button>
+            <button onclick="prevPage()" class="w-1/4 comic-btn-white py-3 text-sm font-bold">이전</button>
+            <button onclick="nextPage()" class="w-2/4 comic-btn py-3 text-lg font-black">다음</button>
+        </div>
+    </div>
+
+    <!-- Page 6: Teacher Retention -->
+    <div id="page-6" class="page px-6 pt-6">
+        <h2 class="text-2xl font-black mb-6 text-[#2d3748]">④ 선생님들의 근속연수</h2>
+        
+        <div class="bg-pink-50 rounded-2xl comic-border border-4 p-6 flex justify-center items-center gap-4 shadow-[4px_4px_0_#2d3748] mb-8 bg-white">
+            <div class="text-[60px]">👩‍🏫</div>
+            <div class="text-[50px] mb-4">📋</div>
+            <div class="text-[50px]">✨</div>
+        </div>
+
+        <div class="comic-card p-6 mb-4 bg-white">
+            <div class="space-y-4">
+                <div class="flex justify-between items-center border-b-2 border-gray-100 pb-2">
+                    <span class="font-bold text-lg text-gray-700">1년 미만</span>
+                    <div class="flex items-center gap-2">
+                        <input type="number" id="retention_under1" class="w-16 border-b-2 border-gray-400 text-center text-xl font-black outline-none" min="0">
+                        <span class="font-bold">명</span>
+                    </div>
+                </div>
+                <div class="flex justify-between items-center border-b-2 border-gray-100 pb-2">
+                    <span class="font-bold text-lg text-gray-700">1~2년 미만</span>
+                    <div class="flex items-center gap-2">
+                        <input type="number" id="retention_1to2" class="w-16 border-b-2 border-gray-400 text-center text-xl font-black outline-none" min="0">
+                        <span class="font-bold">명</span>
+                    </div>
+                </div>
+                <div class="flex justify-between items-center border-b-2 border-gray-100 pb-2">
+                    <span class="font-bold text-lg text-gray-700">2~4년 미만</span>
+                    <div class="flex items-center gap-2">
+                        <input type="number" id="retention_2to4" class="w-16 border-b-2 border-gray-400 text-center text-xl font-black outline-none" min="0">
+                        <span class="font-bold">명</span>
+                    </div>
+                </div>
+                <div class="flex justify-between items-center pb-1">
+                    <span class="font-bold text-lg text-gray-700">6년 이상 장기</span>
+                    <div class="flex items-center gap-2">
+                        <input type="number" id="retention_over6" class="w-16 border-b-2 border-gray-400 text-center text-xl font-black outline-none" min="0">
+                        <span class="font-bold text-[#FF8A00]">명</span>
+                    </div>
+                </div>
+            </div>
+            <p class="text-xs text-center font-bold text-gray-400 mt-4">* 장기 근속 교사가 많을수록 안정적일 수 있습니다.</p>
+        </div>
+
+        <div class="mt-auto pt-4 pb-4 flex gap-2 shrink-0 bg-[#FFF9ED]">
+            <button onclick="goToPage(2)" class="w-1/4 comic-btn-white py-3 text-sm flex items-center justify-center font-bold">목차로</button>
+            <button onclick="prevPage()" class="w-1/4 comic-btn-white py-3 text-sm font-bold">이전</button>
+            <button onclick="nextPage()" class="w-2/4 comic-btn py-3 text-lg font-black">다음</button>
+        </div>
+    </div>
+
+    <!-- Page 7: Vacation (New) -->
+    <div id="page-7" class="page px-6 pt-6">
+        <h2 class="text-2xl font-black mb-4 text-[#2d3748]">⑤ 방학 운영 방식</h2>
+        
+        <div class="space-y-3 mb-6 flex-1 overflow-y-auto pr-1">
+            <!-- 돌봄 -->
+            <div class="comic-card p-4 bg-white">
+                <label class="block font-black text-md mb-2 text-[#2d3748]">1. 방학 중 돌봄 반이 있나요?</label>
+                <div class="flex gap-2">
+                    <button type="button" data-group="vac_care" data-value="O" onclick="selectBtn('vac_care', 'O')" class="flex-1 bg-white text-[#2d3748] border-2 border-[#2d3748] font-bold py-2 rounded-lg transition text-xl">⭕</button>
+                    <button type="button" data-group="vac_care" data-value="X" onclick="selectBtn('vac_care', 'X')" class="flex-1 bg-white text-[#2d3748] border-2 border-[#2d3748] font-bold py-2 rounded-lg transition text-xl">❌</button>
+                    <input type="radio" name="vac_care" value="O" class="hidden">
+                    <input type="radio" name="vac_care" value="X" class="hidden">
+                </div>
+            </div>
+            
+            <!-- 등원 -->
+            <div class="comic-card p-4 bg-white">
+                <label class="block font-black text-md mb-2 text-[#2d3748]">2. 맞벌이 아니어도 등원 가능한가요?</label>
+                <div class="flex gap-2">
+                    <button type="button" data-group="vac_attend" data-value="O" onclick="selectBtn('vac_attend', 'O')" class="flex-1 bg-white text-[#2d3748] border-2 border-[#2d3748] font-bold py-2 rounded-lg transition text-xl">⭕</button>
+                    <button type="button" data-group="vac_attend" data-value="세모" onclick="selectBtn('vac_attend', '세모')" class="flex-1 bg-white text-[#2d3748] border-2 border-[#2d3748] font-bold py-2 rounded-lg transition text-xl">🔺</button>
+                    <button type="button" data-group="vac_attend" data-value="X" onclick="selectBtn('vac_attend', 'X')" class="flex-1 bg-white text-[#2d3748] border-2 border-[#2d3748] font-bold py-2 rounded-lg transition text-xl">❌</button>
+                    <input type="radio" name="vac_attend" value="O" class="hidden">
+                    <input type="radio" name="vac_attend" value="세모" class="hidden">
+                    <input type="radio" name="vac_attend" value="X" class="hidden">
+                </div>
+            </div>
+
+            <!-- 급식/간식 -->
+            <div class="comic-card p-4 bg-white">
+                <label class="block font-black text-md mb-2 text-[#2d3748]">3. 방학 중 급/간식 제공되나요?</label>
+                <div class="flex gap-2">
+                    <button type="button" data-group="vac_meal" data-value="도시락" onclick="selectBtn('vac_meal', '도시락')" class="flex-1 bg-white text-[#2d3748] border-2 border-[#2d3748] font-bold py-2 rounded-lg transition text-sm">개별 도시락</button>
+                    <button type="button" data-group="vac_meal" data-value="제공" onclick="selectBtn('vac_meal', '제공')" class="flex-1 bg-white text-[#2d3748] border-2 border-[#2d3748] font-bold py-2 rounded-lg transition text-sm">유치원 제공</button>
+                    <input type="radio" name="vac_meal" value="도시락" class="hidden">
+                    <input type="radio" name="vac_meal" value="제공" class="hidden">
+                </div>
+            </div>
+
+            <div class="grid grid-cols-2 gap-3">
+                <div class="comic-card p-3 bg-white text-center">
+                    <label class="block font-black text-xs mb-2 text-[#2d3748]">4. 별도 비용 발생?</label>
+                    <div class="flex gap-1">
+                        <button type="button" data-group="vac_cost" data-value="O" onclick="selectBtn('vac_cost', 'O')" class="flex-1 bg-white text-[#2d3748] border-2 border-[#2d3748] font-bold py-1 rounded transition">⭕</button>
+                        <button type="button" data-group="vac_cost" data-value="X" onclick="selectBtn('vac_cost', 'X')" class="flex-1 bg-white text-[#2d3748] border-2 border-[#2d3748] font-bold py-1 rounded transition">❌</button>
+                        <input type="radio" name="vac_cost" value="O" class="hidden">
+                        <input type="radio" name="vac_cost" value="X" class="hidden">
+                    </div>
+                </div>
+                <div class="comic-card p-3 bg-white text-center">
+                    <label class="block font-black text-xs mb-2 text-[#2d3748]">5. 통학 차량 운영?</label>
+                    <div class="flex gap-1">
+                        <button type="button" data-group="vac_bus" data-value="O" onclick="selectBtn('vac_bus', 'O')" class="flex-1 bg-white text-[#2d3748] border-2 border-[#2d3748] font-bold py-1 rounded transition">⭕</button>
+                        <button type="button" data-group="vac_bus" data-value="X" onclick="selectBtn('vac_bus', 'X')" class="flex-1 bg-white text-[#2d3748] border-2 border-[#2d3748] font-bold py-1 rounded transition">❌</button>
+                        <input type="radio" name="vac_bus" value="O" class="hidden">
+                        <input type="radio" name="vac_bus" value="X" class="hidden">
+                    </div>
+                </div>
+            </div>
+
+            <!-- 방학 메모장 -->
+            <div class="mt-4">
+                <label class="block font-black text-sm mb-2 text-[#2d3748]"><i class="fa-solid fa-pen text-[#FFB347]"></i> 방학 특이사항 메모장</label>
+                <textarea id="vacation_memo" rows="2" placeholder="예: 여름방학 2주, 맞벌이 증빙서류 필요 등" class="w-full comic-border border-3 rounded-xl p-3 text-sm font-bold resize-none focus:outline-none focus:border-[#FFB347]"></textarea>
+            </div>
+        </div>
+
+        <div class="mt-auto pt-4 pb-4 flex gap-2 shrink-0 bg-[#FFF9ED] z-10">
+            <button onclick="goToPage(2)" class="w-1/4 comic-btn-white py-3 text-sm flex items-center justify-center font-bold">목차로</button>
+            <button onclick="prevPage()" class="w-1/4 comic-btn-white py-3 text-sm font-bold">이전</button>
+            <button onclick="submitForm()" class="w-2/4 bg-[#4ADE80] text-[#2d3748] border-3 border-[#2d3748] rounded-xl font-black py-3 text-lg shadow-[3px_4px_0_#2d3748] active:translate-y-1 active:translate-x-1 active:shadow-none transition flex justify-center items-center gap-1">
+                <i class="fa-solid fa-check"></i> 완료저장
+            </button>
+        </div>
+    </div>
+
+    <!-- Page 8: Archive (Saved List) -->
+    <div id="page-8" class="page px-6 pt-6">
+        <h2 class="text-2xl font-black mb-6 text-center text-[#2d3748]">
+            🗂️ 내 유치원 보관함
+        </h2>
+        
+        <div id="archive-list" class="flex-1 space-y-4 overflow-y-auto pb-4 pr-1">
+            <!-- List will be injected here via JS -->
+        </div>
+
+        <div class="mt-auto pt-6 pb-4 shrink-0 bg-[#FFF9ED]">
+            <button onclick="goToPage(1)" class="w-full comic-btn py-4 text-lg">처음 화면으로</button>
+        </div>
+    </div>
+
+    <!-- Custom Modal for Completion -->
+    <div id="modal-overlay" class="hidden absolute inset-0 bg-black bg-opacity-60 z-50 flex justify-center items-center">
+        <div class="bg-white p-6 rounded-2xl w-10/12 max-w-sm text-center comic-border border-4">
+            <div class="text-6xl mb-4 animate-bounce">🎉</div>
+            <h3 class="text-2xl font-black mb-2 text-[#2d3748]">저장 완료!</h3>
+            <p class="text-gray-600 font-bold mb-6">유치원 체크리스트가 기기에<br>안전하게 저장되었습니다.</p>
+            <button onclick="closeModal()" class="w-full comic-btn py-3 text-lg">보관함 확인하기</button>
+        </div>
+    </div>
+
+</div>
+
+<script>
+    const STORAGE_KEY = "kindergarten_check_data";
+    
+    // ⭐ [중요] 여기에 구글 앱스 스크립트 '웹앱 배포 URL'을 붙여넣으세요!
+    // 예시: "https://script.google.com/macros/s/AKfycb.../exec"
+    const GOOGLE_SHEET_URL = ""; 
+
+    let currentPage = 1;
+    const totalPages = 8;
+    window.isLoggedIn = false;
+    window.counters = { teacher: 1, coteacher: 0, assistant: 0 };
+    
+    // Page Navigation
+    window.nextPage = function() {
+        if (currentPage === 2) {
+            const kgName = document.getElementById('kg-name').value.trim();
+            if (!kgName) {
+                document.getElementById('kg-error').classList.remove('hidden');
+                document.getElementById('kg-name').classList.add('border-red-500');
+                return;
+            } else {
+                document.getElementById('kg-error').classList.add('hidden');
+                document.getElementById('kg-name').classList.remove('border-red-500');
+            }
+        }
+        if (currentPage < totalPages - 1) { // Up to page 7
+            currentPage++;
+            window.showPage(currentPage);
+        }
+    }
+
+    window.prevPage = function() {
+        if (currentPage > 1) {
+            currentPage--;
+            window.showPage(currentPage);
+        }
+    }
+    
+    window.goToPage = function(pageNumber) {
+        if(pageNumber > 2 && currentPage <= 2) {
+            const kgName = document.getElementById('kg-name').value.trim();
+            if (!kgName) {
+                document.getElementById('kg-error').classList.remove('hidden');
+                document.getElementById('kg-name').focus();
+                return;
+            }
+        }
+        currentPage = pageNumber;
+        window.showPage(pageNumber);
+    }
+
+    window.showPage = function(pageNumber) {
+        for (let i = 1; i <= totalPages; i++) {
+            const page = document.getElementById(`page-${i}`);
+            if(page) page.classList.remove('active');
+        }
+        const targetPage = document.getElementById(`page-${pageNumber}`);
+        if(targetPage) targetPage.classList.add('active');
+        
+        // Handle Header & Progress Bar visibility
+        if (pageNumber === 1 || pageNumber === 8) {
+            document.getElementById('app-header').classList.add('hidden');
+            document.getElementById('progress-bar').classList.add('hidden');
+        } else {
+            document.getElementById('app-header').classList.remove('hidden');
+            if(pageNumber >= 3 && pageNumber <= 7) {
+                document.getElementById('progress-bar').classList.remove('hidden');
+                window.updateProgressBar();
+            } else {
+                document.getElementById('progress-bar').classList.add('hidden');
+            }
+        }
+    }
+
+    window.updateProgressBar = function() {
+        for (let i = 3; i <= 7; i++) {
+            const dot = document.getElementById(`dot-${i}`);
+            if (dot) {
+                if (i <= currentPage) {
+                    dot.classList.remove('bg-white');
+                    dot.classList.add('bg-[#FFB347]');
+                } else {
+                    dot.classList.remove('bg-[#FFB347]');
+                    dot.classList.add('bg-white');
+                }
+            }
+        }
+    }
+
+    // Ratio Calculation logic
+    window.updateCounter = function(type, change) {
+        if (window.counters[type] + change >= 0) {
+            window.counters[type] += change;
+            document.getElementById(`count_${type}`).innerText = window.counters[type];
+            window.calculateRatio();
+        }
+    }
+
+    window.calculateRatio = function() {
+        let childCount = parseInt(document.getElementById('child_count_exact')?.value || 0);
+        const isOver15 = document.querySelector('input[name="child_count"]:checked')?.value === '15_over';
+        if(childCount === 0) {
+            childCount = isOver15 ? 16 : 10; 
+        }
+        
+        const totalTeachers = window.counters.teacher + window.counters.coteacher + window.counters.assistant;
+        const resultEl = document.getElementById('ratio_result');
+        const guideEl = document.getElementById('ratio_guide');
+        
+        if (totalTeachers > 0 && childCount > 0) {
+            const ratio = (childCount / totalTeachers).toFixed(1);
+            resultEl.innerHTML = `현재 비율 <span class="text-3xl text-[#FF8A00] ml-2">1 : ${ratio}</span>`;
+            resultEl.className = 'text-xl font-black text-[#2d3748] mt-1';
+            
+            if(guideEl) {
+                if(ratio <= 8) guideEl.innerHTML = '✨ 이상적인 비율입니다! (권장 1:8 이하)';
+                else if(ratio <= 10) guideEl.innerHTML = '👍 허용 범위입니다. (최대 1:10)';
+                else guideEl.innerHTML = '⚠️ 교사 1명당 아동 수가 다소 많습니다.';
+            }
+        } else {
+            if(resultEl) {
+                resultEl.innerText = '인원수를 정확히 입력해보세요';
+                resultEl.className = 'text-lg font-black text-gray-400 mt-1';
+                if(guideEl) guideEl.innerHTML = '';
+            }
+        }
+    }
+
+    // Tab Logic for Radio Buttons (Crucial Fix)
+    window.selectBtn = function(groupName, value) {
+        // 1. Update Hidden Radio
+        const inputs = document.querySelectorAll(`input[name="${groupName}"]`);
+        inputs.forEach(input => {
+            input.checked = (input.value === value);
+        });
+
+        // 2. Update Visual Buttons
+        const buttons = document.querySelectorAll(`button[data-group="${groupName}"]`);
+        buttons.forEach(btn => {
+            if (btn.dataset.value === value) {
+                btn.classList.add('tab-selected');
+                btn.classList.remove('bg-white', 'text-[#2d3748]');
+            } else {
+                btn.classList.remove('tab-selected');
+                btn.classList.add('bg-white', 'text-[#2d3748]');
+            }
+        });
+
+        if(groupName === 'child_count') window.calculateRatio();
+    }
+    
+    // Tab Logic for Checkboxes
+    window.selectToggle = function(element) {
+        const checkbox = element.querySelector('input[type="checkbox"]');
+        const icon = element.querySelector('.check-icon');
+        
+        if(checkbox) {
+            checkbox.checked = !checkbox.checked;
+            if(checkbox.checked) {
+                element.classList.add('tab-selected');
+                element.classList.remove('bg-white', 'text-[#2d3748]');
+                if(icon) { icon.classList.remove('text-transparent'); icon.classList.add('text-white', 'border-white'); }
+            } else {
+                element.classList.remove('tab-selected');
+                element.classList.add('bg-white', 'text-[#2d3748]');
+                if(icon) { icon.classList.add('text-transparent'); icon.classList.remove('text-white', 'border-white'); }
+            }
+        }
+    }
+
+    // Mock Login
+    function doLogin() {
+        window.isLoggedIn = true;
+        const userNameEl = document.getElementById('user-name');
+        if(userNameEl) userNameEl.innerText = "보호자님";
+    }
+
+    window.loginAndStart = async function() {
+        doLogin();
+        window.nextPage();
+    }
+
+    window.loginAndViewArchive = async function() {
+        doLogin();
+        window.goToPage(8);
+        window.loadArchive();
+    }
+
+    // Save Logic (LocalStorage)
+    window.submitForm = async function() {
+        const data = {
+            id: Date.now().toString(),
+            kindergartenName: document.getElementById('kg-name')?.value || '이름 없음',
+            childCountRange: document.querySelector('input[name="child_count"]:checked')?.value || '',
+            childCountExact: document.getElementById('child_count_exact')?.value || '',
+            teachers: window.counters,
+            resident: document.querySelector('input[name="resident"]:checked')?.value || '',
+            playtime: {
+                indoor: document.querySelector('input[name="indoor_play"]:checked')?.value || '',
+                outdoor: document.querySelector('input[name="outdoor_play"]:checked')?.value || ''
+            },
+            programs: Array.from(document.querySelectorAll('input[name="program"]:checked')).map(el => el.value),
+            memo: document.getElementById('memo')?.value || '',
+            retention: {
+                under1: document.getElementById('retention_under1')?.value || 0,
+                oneToTwo: document.getElementById('retention_1to2')?.value || 0,
+                twoToFour: document.getElementById('retention_2to4')?.value || 0,
+                overSix: document.getElementById('retention_over6')?.value || 0
+            },
+            vacation: {
+                care: document.querySelector('input[name="vac_care"]:checked')?.value || '',
+                attend: document.querySelector('input[name="vac_attend"]:checked')?.value || '',
+                meal: document.querySelector('input[name="vac_meal"]:checked')?.value || '',
+                cost: document.querySelector('input[name="vac_cost"]:checked')?.value || '',
+                bus: document.querySelector('input[name="vac_bus"]:checked')?.value || '',
+                memo: document.getElementById('vacation_memo')?.value || ''
+            },
+            createdAt: new Date().toISOString()
+        };
+
+        try {
+            // 1. 기존처럼 폰(브라우저)에 저장
+            const existingData = JSON.parse(localStorage.getItem(STORAGE_KEY) || '[]');
+            existingData.push(data);
+            localStorage.setItem(STORAGE_KEY, JSON.stringify(existingData));
+            
+            // 2. ⭐ 구글 시트로 데이터 전송 (URL이 입력되어 있을 때만 작동)
+            if (GOOGLE_SHEET_URL.startsWith("http")) {
+                fetch(GOOGLE_SHEET_URL, {
+                    method: 'POST',
+                    // CORS 문제 우회를 위해 Content-Type을 text/plain으로 전송
+                    headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+                    body: JSON.stringify(data)
+                }).then(response => console.log("구글 시트 전송 완료"))
+                  .catch(e => console.error("구글 시트 전송 에러:", e));
+            }
+
+            document.getElementById('modal-overlay').classList.remove('hidden');
+        } catch(e) {
+            console.error("Save error", e);
+            alert("저장 중 오류가 발생했습니다.");
+        }
+    }
+
+    window.closeModal = function() {
+        document.getElementById('modal-overlay').classList.add('hidden');
+        window.goToPage(8);
+        window.loadArchive();
+        
+        // 폼 완전 초기화 (새로 등록할 때를 대비)
+        document.getElementById('kg-name').value = '';
+        document.querySelectorAll('input[type="number"], input[type="text"], textarea').forEach(input => input.value = '');
+        document.querySelectorAll('input[type="radio"], input[type="checkbox"]').forEach(input => input.checked = false);
+        
+        document.querySelectorAll('.tab-selected').forEach(el => {
+            el.classList.remove('tab-selected');
+            el.classList.add('bg-white', 'text-[#2d3748]');
+            const icon = el.querySelector('.check-icon');
+            if(icon) { icon.classList.add('text-transparent'); icon.classList.remove('text-white', 'border-white'); }
+        });
+
+        window.counters = { teacher: 1, coteacher: 0, assistant: 0 };
+        document.getElementById('count_teacher').innerText = '1';
+        document.getElementById('count_coteacher').innerText = '0';
+        document.getElementById('count_assistant').innerText = '0';
+        
+        const resultEl = document.getElementById('ratio_result');
+        if(resultEl) { resultEl.innerText = '인원을 입력해주세요'; resultEl.className = 'text-lg font-black text-gray-400 mt-1'; }
+        const guideEl = document.getElementById('ratio_guide');
+        if(guideEl) guideEl.innerHTML = '';
+    }
+
+    // Load Archive
+    window.loadArchive = async function() {
+        const container = document.getElementById('archive-list');
+        try {
+            let list = JSON.parse(localStorage.getItem(STORAGE_KEY) || '[]');
+            list.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt)); // 최신순
+
+            if (list.length === 0) {
+                container.innerHTML = `
+                    <div class="comic-card p-8 text-center mt-10 bg-white">
+                        <div class="text-6xl mb-4">📭</div>
+                        <p class="font-bold text-[#2d3748] mt-2">저장된 유치원이 없습니다.</p>
+                        <p class="text-sm text-gray-500 mt-2">먼저 체크리스트를 작성해보세요!</p>
+                        <button onclick="goToPage(2)" class="mt-6 w-full comic-btn py-2">새로 작성하기</button>
+                    </div>`;
+                return;
+            }
+
+            container.innerHTML = '';
+            list.forEach(item => {
+                const tInfo = item.teachers || { teacher: 1, coteacher: 0, assistant: 0 };
+                let ratioStr = "-";
+                if (item.childCountExact && tInfo) {
+                    const ratio = parseInt(item.childCountExact) / (tInfo.teacher + tInfo.coteacher + tInfo.assistant);
+                    ratioStr = isNaN(ratio) || !isFinite(ratio) ? "-" : `1 : ${ratio.toFixed(1)}`;
+                }
+                
+                let dateStr = "오늘";
+                if(item.createdAt) {
+                    const d = new Date(item.createdAt);
+                    dateStr = `${d.getFullYear()}.${String(d.getMonth()+1).padStart(2,'0')}.${String(d.getDate()).padStart(2,'0')}`;
+                }
+
+                const card = document.createElement('div');
+                card.className = 'comic-card p-4 mb-3 bg-white relative';
+                card.innerHTML = `
+                    <div class="flex justify-between items-start mb-3">
+                        <h3 class="font-black text-xl text-[#2d3748] flex items-center gap-2"><i class="fa-solid fa-school text-[#FFB347]"></i> ${item.kindergartenName || '이름 없음'}</h3>
+                        <span class="text-[10px] font-bold text-gray-400 bg-gray-100 px-2 py-1 rounded-full border-2 border-gray-200">${dateStr}</span>
+                    </div>
+                    <div class="grid grid-cols-2 gap-2 text-sm mb-4">
+                        <div class="bg-blue-50 p-2 rounded-lg comic-border border-2 font-bold text-center">
+                            <span class="text-gray-400 block text-[10px] uppercase mb-1">현재 아동/교사 비율</span>
+                            <span class="text-blue-600">${ratioStr}</span>
+                        </div>
+                        <div class="bg-pink-50 p-2 rounded-lg comic-border border-2 font-bold text-center">
+                            <span class="text-gray-400 block text-[10px] uppercase mb-1">방학 돌봄/등원</span>
+                            <span class="text-pink-600">${item.vacation?.care || '-'}/${item.vacation?.attend || '-'}</span>
+                        </div>
+                    </div>
+                    <div class="flex justify-between items-center gap-2">
+                        <button onclick='window.deleteArchiveItem("${item.id}")' class="text-xs font-black text-red-500 bg-white px-3 py-2 rounded-xl comic-border border-2 active:translate-y-1 active:translate-x-1 active:shadow-none transition flex-shrink-0">
+                            <i class="fa-solid fa-trash"></i> 삭제
+                        </button>
+                        <button onclick='window.downloadSpecificCSV(${JSON.stringify(item)})' class="flex-1 text-sm font-black text-[#2d3748] bg-[#FFB347] px-4 py-2 rounded-xl comic-border border-2 active:translate-y-1 active:translate-x-1 active:shadow-none transition">
+                            <i class="fa-solid fa-file-excel mr-1 text-white"></i> 엑셀 파일로 받기
+                        </button>
+                    </div>
+                `;
+                container.appendChild(card);
+            });
+
+            const newBtn = document.createElement('button');
+            newBtn.onclick = () => window.goToPage(2);
+            newBtn.className = "w-full comic-btn-white py-4 mt-2 text-lg";
+            newBtn.innerHTML = "<i class='fa-solid fa-plus'></i> 새로운 유치원 추가하기";
+            container.appendChild(newBtn);
+
+        } catch(e) {
+            console.error("Load error", e);
+        }
+    }
+
+    window.deleteArchiveItem = function(id) {
+        if(confirm("이 유치원 정보를 보관함에서 삭제하시겠습니까?")) {
+            let list = JSON.parse(localStorage.getItem(STORAGE_KEY) || '[]');
+            list = list.filter(item => item.id !== id);
+            localStorage.setItem(STORAGE_KEY, JSON.stringify(list));
+            window.loadArchive();
+        }
+    }
+
+    // CSV Download
+    window.downloadSpecificCSV = function(d) {
+        let csvContent = "data:text/csv;charset=utf-8,\uFEFF"; 
+        csvContent += "구분,상세 내용\n";
+        const safeCsv = (str) => `"${(str||'').toString().replace(/"/g, '""')}"`;
+
+        csvContent += `유치원 이름,${safeCsv(d.kindergartenName)}\n`;
+        csvContent += `한 반 아이 수,${d.childCountExact}명 (${d.childCountRange})\n`;
+        csvContent += `담임/부담임/보조,${d.teachers?.teacher||0}명 / ${d.teachers?.coteacher||0}명 / ${d.teachers?.assistant||0}명\n`;
+        
+        const ratio = parseInt(d.childCountExact) / ((d.teachers?.teacher||0) + (d.teachers?.coteacher||0) + (d.teachers?.assistant||0));
+        const ratioStr = isNaN(ratio) || !isFinite(ratio) ? "계산불가" : `1 : ${ratio.toFixed(1)}`;
+        csvContent += `아동:교사 실제 비율,${safeCsv(ratioStr)}\n`;
+        csvContent += `교사 상주 여부,${safeCsv(d.resident)}\n`;
+        
+        csvContent += `실내 놀이시간,${safeCsv(d.playtime?.indoor)}\n`;
+        csvContent += `실외 바깥놀이,${safeCsv(d.playtime?.outdoor)}\n`;
+        
+        csvContent += `운영 프로그램,${safeCsv((d.programs||[]).join(', '))}\n`;
+        csvContent += `프로그램 추가메모,${safeCsv(d.memo)}\n`;
+        
+        csvContent += `근속연수(1년미만),${d.retention?.under1 || 0}명\n`;
+        csvContent += `근속연수(1~2년),${d.retention?.oneToTwo || 0}명\n`;
+        csvContent += `근속연수(2~4년),${d.retention?.twoToFour || 0}명\n`;
+        csvContent += `근속연수(6년이상),${d.retention?.overSix || 0}명\n`;
+
+        csvContent += `방학중 돌봄,${d.vacation?.care || '-'}\n`;
+        csvContent += `방학중 비맞벌이 등원,${d.vacation?.attend || '-'}\n`;
+        csvContent += `방학중 급/간식,${d.vacation?.meal || '-'}\n`;
+        csvContent += `방학중 별도비용,${d.vacation?.cost || '-'}\n`;
+        csvContent += `방학중 차량운영,${d.vacation?.bus || '-'}\n`;
+        csvContent += `방학 특이사항 메모,${safeCsv(d.vacation?.memo || '')}\n`;
+
+        const encodedUri = encodeURI(csvContent);
+        const link = document.createElement("a");
+        link.setAttribute("href", encodedUri);
+        link.setAttribute("download", `${d.kindergartenName || '유치원'}_체크리스트.csv`);
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+    }
+</script>
+</body>
+</html>
