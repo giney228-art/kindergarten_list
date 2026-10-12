@@ -8,9 +8,9 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;700;900&display=swap" rel="stylesheet">
     <style>
-        /* 🚀 [수정] HTML과 Body의 높이를 브라우저 화면(100%)에 꽉 차게 절대 고정 */
-        html, body { width: 100%; height: 100%; margin: 0; padding: 0; overflow: hidden; background-color: #e2e8f0; }
-        body { font-family: 'Noto Sans KR', sans-serif; }
+        /* 🚀 [수정] 모바일 키보드 먹통 현상의 주범인 'overflow: hidden'을 Body에서 제거했습니다! */
+        html, body { width: 100%; height: 100%; margin: 0; padding: 0; }
+        body { font-family: 'Noto Sans KR', sans-serif; background-color: #e2e8f0; }
     
         /* 코믹/일러스트 스타일 굵은 테두리와 디자인 */
         .comic-border { border-color: #2d3748; }
@@ -31,7 +31,7 @@
         /* 화면 잘림 방지를 위한 레이아웃 재설계 */
         .page { display: none; height: 100%; flex-direction: column; overflow: hidden; }
         .page.active { display: flex; }
-        .content-scroll { flex: 1; overflow-y: auto; padding-bottom: 20px; }
+        .content-scroll { flex: 1; overflow-y: auto; padding-bottom: 30px; -webkit-overflow-scrolling: touch; }
         
         /* 스크롤바 숨기기 */
         ::-webkit-scrollbar { width: 0px; background: transparent; }
@@ -40,10 +40,10 @@
         .tab-selected { background-color: #FFB347 !important; color: white !important; border-color: #FFB347 !important; }
     </style>
 </head>
-<body class="flex justify-center items-center">
+<body class="sm:flex sm:justify-center sm:items-center">
 
-<!-- 🚀 [수정] 컨테이너 높이를 h-full로 변경하여 잘림 완벽 방지, 넓은 화면(sm)에서는 폰처럼 둥글게 보이도록 처리 -->
-<div id="app-container" class="w-full h-full max-w-md bg-[#FFF9ED] relative flex flex-col border-x-4 sm:h-[92%] sm:max-h-[880px] sm:rounded-[2.5rem] sm:border-4 comic-border shadow-2xl overflow-hidden box-border">
+<!-- 🚀 [수정] 모바일에서는 fixed inset-0으로 벽에 딱 붙여서 잘림을 방지하고, PC에서는 둥근 폰 모양으로 띄웁니다! -->
+<div id="app-container" class="fixed inset-0 bg-[#FFF9ED] flex flex-col overflow-hidden sm:relative sm:inset-auto sm:w-full sm:max-w-md sm:h-[92vh] sm:max-h-[880px] sm:rounded-[2.5rem] sm:border-4 comic-border sm:shadow-2xl mx-auto z-0">
     
     <!-- 공통 헤더 (페이지 2~7) -->
     <div id="app-header" class="hidden flex justify-between items-center p-4 border-b-4 comic-border bg-white z-10 shrink-0">
@@ -55,7 +55,7 @@
     </div>
 
     <!-- 진행률 표시기 -->
-    <div id="progress-bar" class="hidden flex justify-center gap-2 py-3 bg-[#FFF9ED] shrink-0 border-b-4 comic-border">
+    <div id="progress-bar" class="hidden flex justify-center gap-2 py-3 bg-[#FFF9ED] shrink-0 border-b-4 comic-border z-10">
         <div id="dot-3" class="w-3 h-3 rounded-full comic-border border-2 bg-white transition-colors"></div>
         <div id="dot-4" class="w-3 h-3 rounded-full comic-border border-2 bg-white transition-colors"></div>
         <div id="dot-5" class="w-3 h-3 rounded-full comic-border border-2 bg-white transition-colors"></div>
@@ -78,19 +78,14 @@
                 <div class="w-64 h-64 relative">
                     <svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg" class="w-full h-full drop-shadow-[6px_6px_0_rgba(45,55,72,1)]">
                         <circle cx="100" cy="100" r="90" fill="#FFF9ED" stroke="#2d3748" stroke-width="6"/>
-                        <!-- 지도 모양 -->
                         <path d="M 40 80 Q 100 60 160 80 L 160 150 Q 100 130 40 150 Z" fill="#E2E8F0" stroke="#2d3748" stroke-width="6" stroke-linejoin="round"/>
                         <path d="M 100 70 L 100 140" stroke="#2d3748" stroke-width="5" stroke-dasharray="8,6" stroke-linecap="round"/>
-                        <!-- 집/유치원 모양 -->
                         <rect x="50" y="70" width="50" height="50" rx="5" fill="#FFCFB3" stroke="#2d3748" stroke-width="6" stroke-linejoin="round"/>
                         <polygon points="45,70 75,35 105,70" fill="#FF8A00" stroke="#2d3748" stroke-width="6" stroke-linejoin="round"/>
                         <rect x="65" y="90" width="20" height="30" rx="3" fill="#FFF" stroke="#2d3748" stroke-width="6"/>
-                        <!-- 나무 모양 -->
                         <path d="M 140 50 C 155 50 155 75 140 90 C 125 75 125 50 140 50 Z" fill="#4ADE80" stroke="#2d3748" stroke-width="6" stroke-linejoin="round"/>
                         <circle cx="140" cy="65" r="6" fill="#FFF" stroke="#2d3748" stroke-width="4"/>
-                        <!-- 별 모양 -->
                         <path d="M 170 30 L 175 40 L 185 45 L 175 50 L 170 60 L 165 50 L 155 45 L 165 40 Z" fill="#FCD34D" stroke="#2d3748" stroke-width="4" stroke-linejoin="round"/>
-                        <!-- 아이콘 장식 -->
                         <circle cx="90" cy="150" r="15" fill="#FCA5A5" stroke="#2d3748" stroke-width="5"/>
                         <circle cx="120" cy="140" r="18" fill="#60A5FA" stroke="#2d3748" stroke-width="5"/>
                     </svg>
@@ -102,7 +97,7 @@
         </div>
         
         <!-- 하단 고정 버튼 영역 -->
-        <div class="shrink-0 px-6 pb-10 pt-4 bg-[#FFF9ED] z-10">
+        <div class="shrink-0 px-6 pb-12 pt-4 bg-[#FFF9ED] z-10 border-t-2 border-dashed border-gray-300">
             <button onclick="loginAndStart()" class="w-full comic-btn py-4 text-lg flex items-center justify-center gap-3 mb-3">
                 <i class="fa-solid fa-play text-white"></i>
                 체크 시작하기
@@ -117,8 +112,9 @@
     <div id="page-2" class="page">
         <div class="content-scroll px-6 pt-6">
             <div class="comic-card p-5 mb-6 bg-white">
-                <label class="block text-sm font-black text-gray-500 mb-2">알아보고 계신 유치원 이름</label>
-                <input type="text" id="kg-name" placeholder="예: 튼튼유치원" class="w-full border-b-4 border-[#2d3748] text-2xl font-black text-[#2d3748] py-2 outline-none focus:border-[#FFB347] transition placeholder-gray-300">
+                <label class="block text-sm font-black text-gray-500 mb-2" for="kg-name">알아보고 계신 유치원 이름</label>
+                <!-- 🚀 [수정] 터치 시 정상적으로 커서가 잡히도록 속성 추가 -->
+                <input type="text" id="kg-name" autocomplete="off" spellcheck="false" placeholder="예: 튼튼유치원" class="w-full border-b-4 border-[#2d3748] text-2xl font-black text-[#2d3748] py-2 outline-none focus:border-[#FFB347] transition placeholder-gray-300 bg-transparent">
                 <p id="kg-error" class="text-red-500 text-xs font-bold mt-2 hidden">유치원 이름을 꼭 입력해주세요!</p>
             </div>
 
@@ -143,7 +139,7 @@
             </div>
         </div>
 
-        <div class="shrink-0 px-6 py-4 bg-[#FFF9ED] border-t-4 comic-border z-10">
+        <div class="shrink-0 px-6 py-4 pb-8 bg-[#FFF9ED] border-t-4 comic-border z-10">
             <button onclick="nextPage()" class="w-full comic-btn py-4 text-lg">다음으로</button>
         </div>
     </div>
@@ -163,7 +159,7 @@
                 </div>
                 <div class="flex items-center gap-3">
                     <span class="font-bold text-gray-500">정확한 인원:</span>
-                    <input type="number" id="child_count_exact" placeholder="예: 16" class="w-20 border-b-2 border-gray-400 text-center text-lg font-bold outline-none focus:border-[#FFB347]" oninput="calculateRatio()">
+                    <input type="number" id="child_count_exact" placeholder="예: 16" class="w-20 border-b-2 border-gray-400 text-center text-lg font-bold outline-none focus:border-[#FFB347] bg-transparent" oninput="calculateRatio()">
                     <span class="font-bold">명</span>
                 </div>
             </div>
@@ -172,7 +168,7 @@
                 <label class="block font-black text-lg mb-4 text-[#2d3748]">반의 교사 수</label>
                 <div class="grid grid-cols-3 gap-2 text-center mb-4">
                     <div>
-                        <div class="font-bold mb-2 bg-[#FFF9ED] rounded-lg py-1 border-2 border-gray-200">담임교사</div>
+                        <div class="font-bold mb-2 bg-[#FFF9ED] rounded-lg py-1 border-2 border-gray-200 text-sm">담임교사</div>
                         <div class="flex justify-between items-center bg-gray-100 rounded-lg p-1 border-2 border-gray-200">
                             <button onclick="updateCounter('teacher', -1)" class="w-6 h-6 bg-white rounded font-black active:bg-gray-200">-</button>
                             <span id="count_teacher" class="font-black text-lg">1</span>
@@ -180,7 +176,7 @@
                         </div>
                     </div>
                     <div>
-                        <div class="font-bold mb-2 bg-[#FFF9ED] rounded-lg py-1 border-2 border-gray-200">부담임</div>
+                        <div class="font-bold mb-2 bg-[#FFF9ED] rounded-lg py-1 border-2 border-gray-200 text-sm">부담임</div>
                         <div class="flex justify-between items-center bg-gray-100 rounded-lg p-1 border-2 border-gray-200">
                             <button onclick="updateCounter('coteacher', -1)" class="w-6 h-6 bg-white rounded font-black active:bg-gray-200">-</button>
                             <span id="count_coteacher" class="font-black text-lg">0</span>
@@ -188,7 +184,7 @@
                         </div>
                     </div>
                     <div>
-                        <div class="font-bold mb-2 bg-[#FFF9ED] rounded-lg py-1 border-2 border-gray-200">보조교사</div>
+                        <div class="font-bold mb-2 bg-[#FFF9ED] rounded-lg py-1 border-2 border-gray-200 text-sm">보조교사</div>
                         <div class="flex justify-between items-center bg-gray-100 rounded-lg p-1 border-2 border-gray-200">
                             <button onclick="updateCounter('assistant', -1)" class="w-6 h-6 bg-white rounded font-black active:bg-gray-200">-</button>
                             <span id="count_assistant" class="font-black text-lg">0</span>
@@ -214,8 +210,8 @@
             </div>
         </div>
 
-        <div class="shrink-0 px-6 py-4 bg-[#FFF9ED] border-t-4 comic-border z-10 flex gap-2">
-            <button onclick="goToPage(2)" class="w-1/4 comic-btn-white py-3 text-sm flex items-center justify-center font-bold">목차로</button>
+        <div class="shrink-0 px-6 py-4 pb-8 bg-[#FFF9ED] border-t-4 comic-border z-10 flex gap-2">
+            <button onclick="goToPage(2)" class="w-1/4 comic-btn-white py-3 text-sm flex items-center justify-center font-bold">목차</button>
             <button onclick="prevPage()" class="w-1/4 comic-btn-white py-3 text-sm font-bold">이전</button>
             <button onclick="nextPage()" class="w-2/4 comic-btn py-3 text-lg font-black">다음</button>
         </div>
@@ -266,8 +262,8 @@
             </div>
         </div>
 
-        <div class="shrink-0 px-6 py-4 bg-[#FFF9ED] border-t-4 comic-border z-10 flex gap-2">
-            <button onclick="goToPage(2)" class="w-1/4 comic-btn-white py-3 text-sm flex items-center justify-center font-bold">목차로</button>
+        <div class="shrink-0 px-6 py-4 pb-8 bg-[#FFF9ED] border-t-4 comic-border z-10 flex gap-2">
+            <button onclick="goToPage(2)" class="w-1/4 comic-btn-white py-3 text-sm flex items-center justify-center font-bold">목차</button>
             <button onclick="prevPage()" class="w-1/4 comic-btn-white py-3 text-sm font-bold">이전</button>
             <button onclick="nextPage()" class="w-2/4 comic-btn py-3 text-lg font-black">다음</button>
         </div>
@@ -322,13 +318,13 @@
             </div>
 
             <div class="mb-4">
-                <label class="block font-black text-lg mb-2 text-[#2d3748]"><i class="fa-solid fa-pen text-[#FFB347]"></i> 프로그램 메모장</label>
-                <textarea id="memo" rows="3" placeholder="특성화 프로그램 비용, 추가로 운영하는 프로그램 등 알게된 사실을 자유롭게 적어두세요!" class="w-full comic-border border-3 rounded-xl p-3 text-sm font-bold resize-none focus:outline-none focus:border-[#FFB347] transition-colors"></textarea>
+                <label class="block font-black text-lg mb-2 text-[#2d3748]" for="memo"><i class="fa-solid fa-pen text-[#FFB347]"></i> 프로그램 메모장</label>
+                <textarea id="memo" rows="3" placeholder="특성화 프로그램 비용, 추가로 운영하는 프로그램 등 알게된 사실을 자유롭게 적어두세요!" class="w-full comic-border border-3 rounded-xl p-3 text-sm font-bold resize-none focus:outline-none focus:border-[#FFB347] transition-colors bg-transparent"></textarea>
             </div>
         </div>
 
-        <div class="shrink-0 px-6 py-4 bg-[#FFF9ED] border-t-4 comic-border z-10 flex gap-2">
-            <button onclick="goToPage(2)" class="w-1/4 comic-btn-white py-3 text-sm flex items-center justify-center font-bold">목차로</button>
+        <div class="shrink-0 px-6 py-4 pb-8 bg-[#FFF9ED] border-t-4 comic-border z-10 flex gap-2">
+            <button onclick="goToPage(2)" class="w-1/4 comic-btn-white py-3 text-sm flex items-center justify-center font-bold">목차</button>
             <button onclick="prevPage()" class="w-1/4 comic-btn-white py-3 text-sm font-bold">이전</button>
             <button onclick="nextPage()" class="w-2/4 comic-btn py-3 text-lg font-black">다음</button>
         </div>
@@ -359,28 +355,28 @@
                     <div class="flex justify-between items-center border-b-2 border-gray-100 pb-2">
                         <span class="font-bold text-lg text-gray-700">1년 미만</span>
                         <div class="flex items-center gap-2">
-                            <input type="number" id="retention_under1" class="w-16 border-b-2 border-gray-400 text-center text-xl font-black outline-none focus:border-[#FFB347]" min="0">
+                            <input type="number" id="retention_under1" class="w-16 border-b-2 border-gray-400 text-center text-xl font-black outline-none focus:border-[#FFB347] bg-transparent" min="0">
                             <span class="font-bold">명</span>
                         </div>
                     </div>
                     <div class="flex justify-between items-center border-b-2 border-gray-100 pb-2">
                         <span class="font-bold text-lg text-gray-700">1~2년 미만</span>
                         <div class="flex items-center gap-2">
-                            <input type="number" id="retention_1to2" class="w-16 border-b-2 border-gray-400 text-center text-xl font-black outline-none focus:border-[#FFB347]" min="0">
+                            <input type="number" id="retention_1to2" class="w-16 border-b-2 border-gray-400 text-center text-xl font-black outline-none focus:border-[#FFB347] bg-transparent" min="0">
                             <span class="font-bold">명</span>
                         </div>
                     </div>
                     <div class="flex justify-between items-center border-b-2 border-gray-100 pb-2">
                         <span class="font-bold text-lg text-gray-700">2~4년 미만</span>
                         <div class="flex items-center gap-2">
-                            <input type="number" id="retention_2to4" class="w-16 border-b-2 border-gray-400 text-center text-xl font-black outline-none focus:border-[#FFB347]" min="0">
+                            <input type="number" id="retention_2to4" class="w-16 border-b-2 border-gray-400 text-center text-xl font-black outline-none focus:border-[#FFB347] bg-transparent" min="0">
                             <span class="font-bold">명</span>
                         </div>
                     </div>
                     <div class="flex justify-between items-center pb-1">
                         <span class="font-bold text-lg text-gray-700">6년 이상 장기</span>
                         <div class="flex items-center gap-2">
-                            <input type="number" id="retention_over6" class="w-16 border-b-2 border-gray-400 text-center text-xl font-black outline-none focus:border-[#FFB347]" min="0">
+                            <input type="number" id="retention_over6" class="w-16 border-b-2 border-gray-400 text-center text-xl font-black outline-none focus:border-[#FFB347] bg-transparent" min="0">
                             <span class="font-bold text-[#FF8A00]">명</span>
                         </div>
                     </div>
@@ -389,8 +385,8 @@
             </div>
         </div>
 
-        <div class="shrink-0 px-6 py-4 bg-[#FFF9ED] border-t-4 comic-border z-10 flex gap-2">
-            <button onclick="goToPage(2)" class="w-1/4 comic-btn-white py-3 text-sm flex items-center justify-center font-bold">목차로</button>
+        <div class="shrink-0 px-6 py-4 pb-8 bg-[#FFF9ED] border-t-4 comic-border z-10 flex gap-2">
+            <button onclick="goToPage(2)" class="w-1/4 comic-btn-white py-3 text-sm flex items-center justify-center font-bold">목차</button>
             <button onclick="prevPage()" class="w-1/4 comic-btn-white py-3 text-sm font-bold">이전</button>
             <button onclick="nextPage()" class="w-2/4 comic-btn py-3 text-lg font-black">다음</button>
         </div>
@@ -413,7 +409,7 @@
                     </div>
                 </div>
                 
-                <!-- 등원 (세모 제거) -->
+                <!-- 등원 -->
                 <div class="comic-card p-4 bg-white">
                     <label class="block font-black text-md mb-2 text-[#2d3748]">2. 맞벌이 아니어도 등원 가능한가요?</label>
                     <div class="flex gap-2">
@@ -458,14 +454,14 @@
 
                 <!-- 방학 메모장 -->
                 <div class="mt-4 pb-2">
-                    <label class="block font-black text-sm mb-2 text-[#2d3748]"><i class="fa-solid fa-pen text-[#FFB347]"></i> 방학 특이사항 메모장</label>
-                    <textarea id="vacation_memo" rows="2" placeholder="예: 여름방학 2주, 맞벌이 증빙서류 필요 등" class="w-full comic-border border-3 rounded-xl p-3 text-sm font-bold resize-none focus:outline-none focus:border-[#FFB347] transition-colors"></textarea>
+                    <label class="block font-black text-sm mb-2 text-[#2d3748]" for="vacation_memo"><i class="fa-solid fa-pen text-[#FFB347]"></i> 방학 특이사항 메모장</label>
+                    <textarea id="vacation_memo" rows="2" placeholder="예: 여름방학 2주, 맞벌이 증빙서류 필요 등" class="w-full comic-border border-3 rounded-xl p-3 text-sm font-bold resize-none focus:outline-none focus:border-[#FFB347] transition-colors bg-transparent"></textarea>
                 </div>
             </div>
         </div>
 
-        <div class="shrink-0 px-6 py-4 bg-[#FFF9ED] border-t-4 comic-border z-10 flex gap-2">
-            <button onclick="goToPage(2)" class="w-1/4 comic-btn-white py-3 text-sm flex items-center justify-center font-bold">목차로</button>
+        <div class="shrink-0 px-6 py-4 pb-8 bg-[#FFF9ED] border-t-4 comic-border z-10 flex gap-2">
+            <button onclick="goToPage(2)" class="w-1/4 comic-btn-white py-3 text-sm flex items-center justify-center font-bold">목차</button>
             <button onclick="prevPage()" class="w-1/4 comic-btn-white py-3 text-sm font-bold">이전</button>
             <button onclick="submitForm()" class="w-2/4 bg-[#4ADE80] text-[#2d3748] border-3 border-[#2d3748] rounded-xl font-black py-3 text-lg shadow-[3px_4px_0_#2d3748] active:translate-y-1 active:translate-x-1 active:shadow-none transition flex justify-center items-center gap-1">
                 <i class="fa-solid fa-check"></i> 완료저장
@@ -475,12 +471,11 @@
 
     <!-- Page 8: Archive (Saved List) -->
     <div id="page-8" class="page">
-        <div class="px-6 pt-6 pb-2 shrink-0 relative flex flex-col justify-center items-center">
-            <!-- ⭐ [수정] 아이 이름이 들어가는 보관함 타이틀 -->
+        <div class="px-6 pt-6 pb-2 shrink-0 relative flex flex-col justify-center items-center bg-[#FFF9ED] z-10">
             <h2 id="archive-title" class="text-xl font-black text-center text-[#2d3748] mt-2">
                 🗂️ 내 유치원 보관함
             </h2>
-            <button onclick="resetPin()" class="absolute right-6 top-6 text-xs font-bold text-gray-500 bg-gray-100 border-2 border-gray-300 rounded-lg px-2 py-1 flex items-center gap-1 active:bg-gray-200 transition">
+            <button onclick="resetPin()" class="absolute right-6 top-6 text-xs font-bold text-gray-500 bg-white border-2 border-gray-300 rounded-lg px-2 py-1 flex items-center gap-1 active:bg-gray-200 transition">
                 <i class="fa-solid fa-lock-open"></i> 비번변경
             </button>
         </div>
@@ -489,7 +484,7 @@
             <!-- List will be injected here via JS -->
         </div>
 
-        <div class="shrink-0 px-6 py-4 bg-[#FFF9ED] border-t-4 comic-border z-10">
+        <div class="shrink-0 px-6 py-4 pb-8 bg-[#FFF9ED] border-t-4 comic-border z-10">
             <button onclick="goToPage(1)" class="w-full comic-btn py-4 text-lg">처음 화면으로</button>
         </div>
     </div>
@@ -511,13 +506,12 @@
             <h3 id="pin-title" class="text-xl font-black mb-2 text-[#2d3748]">비밀번호 입력</h3>
             <p id="pin-desc" class="text-gray-600 font-bold mb-4 text-sm">보관함을 열기 위해 정보를 입력하세요.</p>
             
-            <!-- ⭐ [수정] 아이 이름 입력 칸 추가 -->
             <div class="mb-4">
-                <input type="text" id="pin-name-input" class="w-full text-center text-xl font-black border-b-4 border-[#2d3748] py-2 outline-none focus:border-[#FFB347] transition-colors placeholder-gray-300" placeholder="아이 이름 (예: 지우)">
+                <input type="text" id="pin-name-input" autocomplete="off" spellcheck="false" class="w-full text-center text-xl font-black border-b-4 border-[#2d3748] py-2 outline-none focus:border-[#FFB347] transition-colors placeholder-gray-300 bg-transparent" placeholder="아이 이름 (예: 지우)">
             </div>
 
             <div class="flex justify-center mb-6">
-                <input type="password" id="pin-input" maxlength="4" inputmode="numeric" class="w-3/4 text-center text-3xl font-black tracking-[0.5em] border-b-4 border-[#2d3748] py-2 outline-none focus:border-[#FFB347] transition-colors" placeholder="••••">
+                <input type="password" id="pin-input" maxlength="4" inputmode="numeric" autocomplete="off" class="w-3/4 text-center text-3xl font-black tracking-[0.5em] border-b-4 border-[#2d3748] py-2 outline-none focus:border-[#FFB347] transition-colors bg-transparent" placeholder="••••">
             </div>
             <p id="pin-error" class="text-red-500 text-xs font-bold mb-4 hidden">정보가 틀렸습니다.</p>
             <div class="flex gap-2">
@@ -539,39 +533,15 @@
             </div>
         </div>
     </div>
-
-    <!-- Error Modal -->
-    <div id="error-modal" class="hidden absolute inset-0 bg-black bg-opacity-60 z-50 flex justify-center items-center">
-         <div class="bg-white p-6 rounded-2xl w-10/12 max-w-sm text-center comic-border border-4 shadow-2xl">
-             <div class="text-6xl mb-4">⚠️</div>
-             <h3 class="text-xl font-black mb-2 text-red-500">안내</h3>
-             <p class="text-gray-600 font-bold mb-6" id="error-message">데이터를 불러오지 못했습니다.</p>
-             <button onclick="document.getElementById('error-modal').classList.add('hidden')" class="w-full bg-[#E2E8F0] text-[#2d3748] border-3 border-[#2d3748] font-black py-3 rounded-xl">확인</button>
-         </div>
-     </div>
 </div>
 
 <script>
     // LocalStorage를 활용한 데이터 관리 방식
-    window.userId = "user_demo_123"; // 로컬용 가상 고유 ID (기기 종속)
+    window.userId = "user_demo_123"; // 로컬용 가상 고유 ID
     window.isLoggedIn = true; 
 
-    // iframe 내부 잘림 방지를 위한 자동 높이 조절 함수
-    function sendHeightToParent() {
-        const height = document.getElementById('app-container').scrollHeight;
-        if (window.parent && window.parent !== window) {
-            window.parent.postMessage({ type: 'resize', height: height }, '*');
-        }
-    }
-
-    window.addEventListener('load', sendHeightToParent);
-    window.addEventListener('resize', sendHeightToParent);
-    const observer = new MutationObserver(sendHeightToParent);
-    observer.observe(document.body, { attributes: true, childList: true, subtree: true });
-
     window.showErrorModal = function(message) {
-        document.getElementById('error-message').innerText = message;
-        document.getElementById('error-modal').classList.remove('hidden');
+        alert(message);
     }
     
     window.showConfirm = function(title, message, icon, onConfirm) {
@@ -608,7 +578,7 @@
             if (!kgName) {
                 document.getElementById('kg-error').classList.remove('hidden');
                 document.getElementById('kg-name').classList.add('border-red-500');
-                document.getElementById('kg-name').focus();
+                // document.getElementById('kg-name').focus();
                 return;
             } else {
                 document.getElementById('kg-error').classList.add('hidden');
@@ -636,7 +606,6 @@
                 window.showPage(2); 
                 document.getElementById('kg-error').classList.remove('hidden');
                 document.getElementById('kg-name').classList.add('border-red-500');
-                document.getElementById('kg-name').focus();
                 return;
             }
         }
@@ -794,13 +763,11 @@
         error.classList.add('hidden');
         
         if (!savedPin) {
-            // ⭐ [수정] 아이 이름과 비밀번호를 함께 설정하도록 안내
             window.isSettingPin = true;
             icon.innerText = '🔐';
             title.innerText = '나만의 보관함 만들기';
             desc.innerHTML = '아이 이름과 4자리 비밀번호를 설정해주세요.<br>(이름과 번호가 일치해야 열립니다)';
         } else {
-            // ⭐ [수정] 열 때도 이름과 비밀번호를 모두 묻도록 변경
             window.isSettingPin = false;
             icon.innerText = '🔒';
             title.innerText = '비밀번호 입력';
@@ -808,7 +775,6 @@
         }
         
         document.getElementById('pin-modal').classList.remove('hidden');
-        setTimeout(() => inputName.focus(), 200);
     };
 
     window.closePinModal = function() {
@@ -840,7 +806,6 @@
         }
         
         if (window.isSettingPin) {
-            // ⭐ [수정] 이름과 비밀번호를 함께 저장
             localStorage.setItem(nameKey, inputName);
             localStorage.setItem(pinKey, inputPin);
             window.closePinModal();
@@ -850,7 +815,6 @@
             const savedPin = localStorage.getItem(pinKey);
             const savedName = localStorage.getItem(nameKey);
             
-            // ⭐ [수정] 이름과 비밀번호가 모두 맞아야 통과!
             if (inputPin === savedPin && inputName === savedName) {
                 window.closePinModal();
                 window.goToPage(8);
@@ -871,7 +835,7 @@
             
             window.goToPage(1); 
             setTimeout(() => {
-                window.showErrorModal('초기화되었습니다. 다시 [보관함 보기]를 눌러 새 이름과 비밀번호를 설정해주세요.');
+                alert('초기화되었습니다. 다시 [보관함 보기]를 눌러 새 이름과 비밀번호를 설정해주세요.');
             }, 300);
         });
     }
@@ -949,7 +913,6 @@
         const storageKey = 'kg_list_' + window.userId;
         let list = JSON.parse(localStorage.getItem(storageKey) || '[]');
 
-        // ⭐ [수정] 보관함 타이틀에 설정한 아이 이름 띄워주기
         const savedName = localStorage.getItem('archive_name_' + window.userId) || '내';
         document.getElementById('archive-title').innerHTML = `🗂️ [${savedName}]의 유치원 보관함`;
 
@@ -1065,7 +1028,6 @@
         const link = document.createElement("a");
         link.setAttribute("href", encodedUri);
         
-        // 파일 이름에도 아이 이름 넣어주기
         const savedName = localStorage.getItem('archive_name_' + window.userId) || '내';
         link.setAttribute("download", `[${savedName}]_${d.kindergartenName || '유치원'}_체크리스트.csv`);
         
